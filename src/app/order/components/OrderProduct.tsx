@@ -11,7 +11,7 @@ export const OrderProduct: React.FC<OrderProductProps> = ({
   description,
 }) => {
   return (
-    <div className="product-item flex flex-row space-x-8 mt-1 align-center">
+    <div className="product-item flex flex-col lg:flex-row space-x-8 mt-1 justify-between">
       <div className="product-name">{name}</div>
       <div className="product-description">{description}</div>
       <div className="product-price">{price}</div>

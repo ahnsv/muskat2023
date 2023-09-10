@@ -3,28 +3,27 @@ import { cookies } from "next/headers";
 import { Database } from "~/lib/database.types";
 import { OrderProduct } from "./components/OrderProduct";
 
-type Product = Database['public']['Tables']['products']
+type Product = Database["public"]["Tables"]["products"];
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 export default async function OrderPage() {
-  const supabase = createServerComponentClient<Database>({ cookies })
-  const { data } = await supabase.from('products').select() 
+  const supabase = createServerComponentClient<Database>({ cookies });
+  const { data } = await supabase.from("products").select();
 
   return (
-    <div className="order-page container mx-auto py-12">
-      <h1 className="font-bold leading-7 text-gray-900 text-7xl">
-        주문하기
-      </h1>
+    <div className="order-page container mx-auto py-12 px-4 lg:px-2">
+      <h1 className="font-bold leading-7 text-gray-900 text-7xl">주문하기</h1>
       {/* <hr className="h-px mt-16 bg-gray-200 border-0 dark:bg-gray-700" /> */}
       <form className="mt-12">
         <div className="space-y-12">
           <div className="cart">
             <p className="title text-3xl text-gray-500 font-bold">상품 담기</p>
             <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
-            {
-              data && data.map((item, key) => <OrderProduct key={key} {...item} />)
-            }
+            <div className="options space-y-4">
+              {data &&
+                data.map((item, key) => <OrderProduct key={key} {...item} />)}
+            </div>
           </div>
           <div className="delivery space-y-4">
             <p className="title text-xl text-gray-500">배송 정보</p>
