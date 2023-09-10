@@ -5,6 +5,8 @@ import { OrderProduct } from "./components/OrderProduct";
 
 type Product = Database['public']['Tables']['products']
 
+export const dynamic = 'force-dynamic'
+
 export default async function OrderPage() {
   const supabase = createServerComponentClient<Database>({ cookies })
   const { data } = await supabase.from('products').select() 
