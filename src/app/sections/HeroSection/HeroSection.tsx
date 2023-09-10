@@ -54,7 +54,20 @@ export const HeroSection: FC = () => {
             </div>
           </Link>
         </div>
-        <div className="hero-menu flex-1">{/* Product Detail */}</div>
+        <div className="hero-menu flex-1">
+          <Link href={`https://www.humphreyahn.dev/muskat2023`} className="flex flex-col align-center">
+            <Image
+              src={shipping.src} // TODO: replace with product detail icon
+              alt="shipping"
+              width={300}
+              height={250}
+              className="cursor-pointer"
+            />
+            <div className="menu-title text-2xl font-bold text-center">
+              {/* 배송 */}
+            </div>
+          </Link>
+        </div>
         <div className="hero-menu flex-1 mt-32">
           <Image
             src={photos.src}
