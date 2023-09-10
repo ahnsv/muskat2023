@@ -7,6 +7,7 @@ import order from "../../../../public/assets/btn-order.png";
 import photos from "../../../../public/assets/btn-albums.png";
 import shipping from "../../../../public/assets/btn-ship.png";
 import Link from "next/link";
+import SoundButton from "@/app/components/SoundButton";
 
 const BlackHanSans = Black_Han_Sans({ subsets: ["latin"], weight: "400" });
 
@@ -17,6 +18,7 @@ export const HeroSection: FC = () => {
       className={`hero h-full flex flex-col align-center justify-center`}
       ref={containerRef}
     >
+      <SoundButton youtubeVideoID={`M0U9iaH19wo`}/>
       <div
         className={`hero-title text-6xl text-gray-700 ${BlackHanSans.className} text-center italic my-8`}
       >
