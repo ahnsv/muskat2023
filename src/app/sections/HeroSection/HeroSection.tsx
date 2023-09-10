@@ -20,9 +20,10 @@ export const HeroSection: FC = () => {
     >
       <SoundButton youtubeVideoID={`M0U9iaH19wo`}/>
       <div
-        className={`hero-title text-6xl text-gray-700 ${BlackHanSans.className} text-center italic my-8`}
+        className={`hero-title text-5xl lg:text-7xl text-gray-700 ${BlackHanSans.className} text-center italic my-8`}
       >
-        험프리의 샤인 머스캣🍇
+        험프리네 <br></br>
+        샤인 머스캣🍇
       </div>
       <div className="hero-menus flex align-center justify-center">
         <div className="hero-menu flex-1 mt-8">
