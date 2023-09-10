@@ -1,4 +1,14 @@
-export default function OrderPage() {
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { Database } from "~/lib/database.types";
+import { OrderProduct } from "./components/OrderProduct";
+
+type Product = Database['public']['Tables']['products']
+
+export default async function OrderPage() {
+  const supabase = createServerComponentClient<Database>({ cookies })
+  const { data } = await supabase.from('products').select() 
+
   return (
     <div className="order-page container mx-auto py-12">
       <h1 className="font-bold leading-7 text-gray-900 text-7xl">
@@ -10,28 +20,9 @@ export default function OrderPage() {
           <div className="cart">
             <p className="title text-3xl text-gray-500 font-bold">상품 담기</p>
             <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
-            <div className="product-item flex flex-row space-x-8 mt-1 align-center">
-              <div className="product-name">샤인머스켓 2kg</div>
-              <div className="product-price">30,000</div>
-              <input
-                type="number"
-                name="counter"
-                id="counter"
-                placeholder="0"
-                className="rounded"
-              />
-            </div>
-            <div className="product-item flex flex-row space-x-8 mt-1">
-              <div className="product-name">샤인머스켓 4kg</div>
-              <div className="product-price">50,000</div>
-              <input
-                type="number"
-                name="counter"
-                id="counter"
-                placeholder="0"
-                className="rounded"
-              />
-            </div>
+            {
+              data && data.map((item, key) => <OrderProduct key={key} {...item} />)
+            }
           </div>
           <div className="delivery space-y-4">
             <p className="title text-xl text-gray-500">배송 정보</p>
