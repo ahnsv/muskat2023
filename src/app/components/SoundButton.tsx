@@ -11,7 +11,7 @@ type SoundButtonProps = {
 };
 const SoundButton: React.FC<SoundButtonProps> = ({ youtubeVideoID }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const playerRef = useRef<YT.Player | null>(null);
+  const playerRef = useRef(null);
 
   const initPlayer = useCallback(() => {
     if (playerRef.current) return;
@@ -33,7 +33,7 @@ const SoundButton: React.FC<SoundButtonProps> = ({ youtubeVideoID }) => {
     });
 
     playerRef.current = player;
-  }, [isPlaying]);
+  }, [isPlaying, youtubeVideoID]);
 
   useEffect(() => {
     // Load the YouTube Iframe API script
