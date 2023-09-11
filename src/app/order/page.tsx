@@ -15,13 +15,13 @@ export default async function OrderPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect("/login");
-  }
+  // if (!user) {
+  //   redirect("/login");
+  // }
 
   return (
     <div className="order-page lg:container lg:mx-auto py-12 lg:px-24">
-      <h1 className="lg:ml-2 font-bold leading-7 text-gray-900 text-4xl pl-4">
+      <h1 className="lg:ml-2 font-bold leading-7 text-gray-900 text-4xl pl-4 lg:pl-0">
         주문하기
       </h1>
       <OrderForm products={products} />
