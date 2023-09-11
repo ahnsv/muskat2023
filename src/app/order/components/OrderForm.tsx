@@ -5,6 +5,7 @@ import DaumPostCode from "react-daum-postcode";
 import { Database } from "~/lib/database.types";
 import { OrderPageSection } from "./OrderPageSelection";
 import { OrderProduct } from "./OrderProduct";
+import PaymentBlock from "./PaymentBlock";
 
 type Product = Database["public"]["Tables"]["products"];
 type ProductRow = Product["Row"];
@@ -86,7 +87,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
           </div>
         </OrderPageSection>
         <OrderPageSection title="결제">
-          <div className="content">hello</div>
+          <PaymentBlock />
         </OrderPageSection>
       </div>
       <button className="submit-btn bg-blue-400 rounded p-4 w-48 self-end">
