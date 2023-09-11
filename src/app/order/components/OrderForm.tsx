@@ -1,8 +1,10 @@
+"use client";
+
+import { useState } from "react";
+import DaumPostCode from "react-daum-postcode";
 import { Database } from "~/lib/database.types";
 import { OrderPageSection } from "./OrderPageSelection";
 import { OrderProduct } from "./OrderProduct";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 
 type Product = Database["public"]["Tables"]["products"];
 type ProductRow = Product["Row"];
@@ -10,13 +12,26 @@ type ProductRow = Product["Row"];
 type OrderFormProps = {
   products: ProductRow[];
 };
-export const OrderForm: React.FC<OrderFormProps> = async ({ products }) => {
-  const supabase = createServerComponentClient<Database>({ cookies });
-  const { data } = await supabase.from("order").insert({});
-  
+export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
+  const [openPostCode, setOpenPostCode] = useState(false);
+  const handle = {
+    // 버튼 클릭 이벤트
+    clickButton: () => {
+      setOpenPostCode((current) => !current);
+    },
+
+    // 주소 선택 이벤트
+    selectAddress: (data: any) => {
+      console.log(`
+                주소: ${data.address},
+                우편번호: ${data.zonecode}
+            `);
+      setOpenPostCode(false);
+    },
+  };
   return (
     <form className="mt-12 flex flex-col">
-      <div className="space-y-2 bg-gray-100 lg:bg-white">
+      <div className="space-y-2 bg-gray-100 lg:bg-white mb-8">
         <OrderPageSection title="상품 선택">
           <div className="options space-y-4 py-4">
             {products &&
@@ -49,7 +64,13 @@ export const OrderForm: React.FC<OrderFormProps> = async ({ products }) => {
                 placeholder="010-0000-0000"
               />
             </label>
-            <label className="block">
+            <label className="block" onClick={handle.clickButton}>
+              {openPostCode && (
+                <DaumPostCode
+                  onComplete={handle.selectAddress} // 값을 선택할 경우 실행되는 이벤트
+                  autoClose={true} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
+                />
+              )}
               <span className="text-gray-700">주소</span>
               <input
                 type="text"
@@ -68,7 +89,9 @@ export const OrderForm: React.FC<OrderFormProps> = async ({ products }) => {
           <div className="content">hello</div>
         </OrderPageSection>
       </div>
-      <button className="submit-btn bg-blue-400 rounded p-4 w-48 self-end">제출</button>
+      <button className="submit-btn bg-blue-400 rounded p-4 w-48 self-end">
+        제출
+      </button>
     </form>
   );
 };
