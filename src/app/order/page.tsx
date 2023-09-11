@@ -12,12 +12,12 @@ export default async function OrderPage() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data: products } = await supabase.from("products").select();
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  // if (!user) {
-  //   redirect("/login");
-  // }
+  if (!session) {
+    redirect("/login");
+  }
 
   return (
     <div className="order-page lg:container lg:mx-auto py-12 lg:px-24">
