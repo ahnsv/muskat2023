@@ -32,6 +32,9 @@ async function signInWithKakao() {
       redirectTo: getURL(),
     },
   });
+  if (error) {
+    alert(error.message)
+  }
 }
 
 export const LoginForm: React.FC = () => {

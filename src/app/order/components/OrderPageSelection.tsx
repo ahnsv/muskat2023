@@ -9,7 +9,7 @@ export const OrderPageSection: React.FC<OrderPageSectionProps> = ({
   children,
 }) => {
   return (
-    <div className="cart bg-white px-4 py-2">
+    <div className="cart bg-white px-4 py-8">
       <p className="title text-2xl font-bold">{title}</p>
       {/* <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" /> */}
       {children}
