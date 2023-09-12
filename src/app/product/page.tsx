@@ -19,7 +19,7 @@ const ProductDetail: React.FC = () => {
         <div className="max-w-lg mx-auto">
           <ImageCarousel />
         </div>
-        <div>
+        <div className='px-4'>
           <h1 className="text-2xl font-semibold mb-4">Product Name</h1>
           <p className="text-gray-600 mb-4">Product Description Lorem ipsum dolor sit amet...</p>
           <div className="flex items-center mb-4">
@@ -28,7 +28,7 @@ const ProductDetail: React.FC = () => {
           </div>
           <div className="mb-4">
             <select
-              className="border rounded-md py-2 px-3"
+              className="border rounded-md py-2 px-3 w-full"
               onChange={(e) => {
                 const selectedOption = e.target.value;
                 if (selectedOption === 'Option A') {
