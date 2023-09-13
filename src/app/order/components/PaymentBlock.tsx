@@ -8,7 +8,8 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useAsync } from "react-use";
 
-const clientKey = "test_ck_5mBZ1gQ4YVXyAJ7vXO9rl2KPoqNb";
+const clientKey = process.env.TOSS_PAYMENT_CLIENT_KEY;
+const clientSecret = process.env.TOSS_PAYMENT_CLIENT_SECRET;
 
 export default function PaymentBlock() {
   const paymentWidgetRef = useRef<PaymentWidgetInstance | null>(null);
