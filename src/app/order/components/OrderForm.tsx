@@ -6,6 +6,7 @@ import { Database } from "~/lib/database.types";
 import { OrderPageSection } from "./OrderPageSelection";
 import { OrderProduct } from "./OrderProduct";
 import PaymentBlock from "./PaymentBlock";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 type Product = Database["public"]["Tables"]["products"];
 type ProductRow = Product["Row"];
@@ -13,7 +14,20 @@ type ProductRow = Product["Row"];
 type OrderFormProps = {
   products: ProductRow[];
 };
+
+type OrderFormInput = {
+  price: number;
+};
+
 export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<OrderFormInput>();
+  const onSubmit: SubmitHandler<OrderFormInput> = (data) => console.log(data);
+
   const [openPostCode, setOpenPostCode] = useState(false);
   const handle = {
     // 버튼 클릭 이벤트
@@ -31,12 +45,32 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
     },
   };
   return (
-    <form className="mt-12 flex flex-col">
+    <form className="mt-12 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-2 bg-gray-100 lg:bg-white mb-8">
         <OrderPageSection title="상품 선택">
           <div className="options space-y-4 py-4">
             {products &&
-              products.map((item, key) => <OrderProduct key={key} {...item} />)}
+              //   products.map((item, key) => <OrderProduct key={key} {...item} {...register('price')}/>)}
+              products.map((item, key) => (
+                <div
+                  className="product-item grid grid-cols-4 text-center items-center"
+                  key={key}
+                >
+                  <div className="product-name">{item.name}</div>
+                  <div className="product-description">{item.description}</div>
+                  <div className="product-price">
+                    {item.price.toLocaleString()}
+                  </div>
+                  <input
+                    type="number"
+                    name="counter"
+                    id={`${item.id}-counter`}
+                    placeholder="0"
+                    className="rounded"
+                    {...register("price")}
+                  />
+                </div>
+              ))}
           </div>
         </OrderPageSection>
         <OrderPageSection title="배송 정보">

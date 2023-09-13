@@ -76,8 +76,8 @@ export default function PaymentBlock() {
               orderName: "토스 티셔츠 외 2건",
               customerName: "김토스",
               customerEmail: "customer123@gmail.com",
-              successUrl: `${window.location.origin}/success`,
-              failUrl: `${window.location.origin}/fail`,
+              successUrl: `${window.location.origin}/order/success`,
+              failUrl: `${window.location.origin}/order/fail`,
             });
           } catch (error) {
             // 에러 처리하기

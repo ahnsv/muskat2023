@@ -39,7 +39,7 @@ const ImageCarousel: React.FC = () => {
     product10,
   ];
   return (
-    <div className="w-full h-full bg-gray-200 rounded-lg shadow-md">
+    <div className="w-full h-full bg-gray-200 rounded-lg">
       <Slider {...settings} className="h-full">
         {products.map((product, idx) => (
           <div key={`product${idx + 1}`}>

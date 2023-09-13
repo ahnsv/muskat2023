@@ -1,11 +1,13 @@
 "use client";
 
 type OrderProductProps = {
+  id: number;
   name: string;
   price: number;
   description: string;
 };
 export const OrderProduct: React.FC<OrderProductProps> = ({
+  id,
   name,
   price,
   description,
@@ -14,11 +16,11 @@ export const OrderProduct: React.FC<OrderProductProps> = ({
     <div className="product-item grid grid-cols-4 text-center items-center">
       <div className="product-name">{name}</div>
       <div className="product-description">{description}</div>
-      <div className="product-price">{price}</div>
+      <div className="product-price">{price.toLocaleString()}</div>
       <input
         type="number"
         name="counter"
-        id="counter"
+        id={`${id}-counter`}
         placeholder="0"
         className="rounded"
       />
