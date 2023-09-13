@@ -23,6 +23,7 @@ const ImageCarousel: React.FC = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
+    adaptiveHeight: true,
   };
   const products = [
     product1,
@@ -38,17 +39,16 @@ const ImageCarousel: React.FC = () => {
   ];
   return (
     <div className="w-full h-64 bg-gray-200 rounded-lg shadow-md">
-      {/* Implement your image carousel logic here */}
-      {/* You can use a library like react-slick or build a custom carousel */}
       <Slider {...settings}>
         {products.map((product, idx) => (
-          <div
-            className="slider-item w-48 h-full"
-            key={`product${idx + 1}`}
-            style={{
-              backgroundImage: `url(${product.src})`,
-            }}
-          ></div>
+          <div key={`product${idx + 1}`}>
+            <div
+              className="slider-item w-full h-64 bg-cover bg-center rounded-lg"
+              style={{
+                backgroundImage: `url(${product.src})`,
+              }}
+            />
+          </div>
         ))}
       </Slider>
     </div>

@@ -24,7 +24,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ options }) => {
   return (
     <div className="container mx-auto p-4 h-screen flex items-center justify-center">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 py-4">
-        <div className="max-w-lg mx-auto">
+        <div className="w-128">
           <ImageCarousel />
         </div>
         <div className="px-4">
