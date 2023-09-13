@@ -86,9 +86,6 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
             </label>
           </div>
         </OrderPageSection>
-        <OrderPageSection title="결제">
-          <PaymentBlock />
-        </OrderPageSection>
       </div>
       <button className="submit-btn bg-blue-400 rounded p-4 w-48 self-end">
         제출

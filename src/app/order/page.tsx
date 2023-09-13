@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import { Database } from "~/lib/database.types";
 import { OrderForm } from "./components/OrderForm";
 import { redirect, usePathname } from "next/navigation";
+import { OrderPageSection } from "./components/OrderPageSelection";
+import PaymentBlock from "./components/PaymentBlock";
 
 type Product = Database["public"]["Tables"]["products"];
 
@@ -25,6 +27,9 @@ export default async function OrderPage() {
         주문하기
       </h1>
       <OrderForm products={products} />
+      <OrderPageSection title="결제">
+        <PaymentBlock />
+      </OrderPageSection>
     </div>
   );
 }
