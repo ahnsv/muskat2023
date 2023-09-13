@@ -24,7 +24,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ options }) => {
   return (
     <div className="container mx-auto p-4 h-screen flex items-center justify-center">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 py-4">
-        <div className="w-128">
+        <div className="w-96 h-max">
           <ImageCarousel />
         </div>
         <div className="px-4">
@@ -36,7 +36,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ options }) => {
             <span className="text-xl font-bold text-gray-800 mr-2">
               ₩{price.toLocaleString()}
             </span>
-            <span className="text-gray-500 text-sm">(${selectedPackage})</span>
+            <span className="text-gray-500 text-sm">({selectedPackage})</span>
           </div>
           <div className="mb-4">
             <select
