@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import { Database } from "~/lib/database.types";
 import { OrderPageSection } from "./OrderPageSelection";
@@ -16,7 +16,15 @@ type OrderFormProps = {
 };
 
 type OrderFormInput = {
-  price: number;
+  price1: number;
+  price2: number;
+  price3: number;
+  price4: number;
+  name: string;
+  email: string;
+  phone: string;
+  deliveryAddress: string;
+  deliveryAddressDetail: string
 };
 
 export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
@@ -51,7 +59,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
           <div className="options space-y-4 py-4">
             {products &&
               //   products.map((item, key) => <OrderProduct key={key} {...item} {...register('price')}/>)}
-              products.map((item, key) => (
+              products.map((item, key: 1 | 2 | 3 | 4) => (
                 <div
                   className="product-item grid grid-cols-4 text-center items-center"
                   key={key}
@@ -67,7 +75,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                     id={`${item.id}-counter`}
                     placeholder="0"
                     className="rounded"
-                    {...register("price")}
+                    {...register(`price${key}`)}
+                    // onChange={(e: ChangeEvent<HTMLInputElement>) => {setValue(`price${key}`, e.currentTarget.valueAsNumber * item.price)}}
                   />
                 </div>
               ))}
@@ -81,6 +90,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                 type="text"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder=""
+                {...register('name')}
               />
             </label>
             <label className="block">
@@ -89,6 +99,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                 type="email"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="john@example.com"
+                {...register('email')}
               />
             </label>
             <label className="block">
@@ -97,6 +108,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                 type="phone"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="010-0000-0000"
+                {...register('phone')}
               />
             </label>
             <label className="block" onClick={handle.clickButton}>
@@ -111,13 +123,16 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                 type="text"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="주소"
+                {...register('deliveryAddress')}
               />
               <input
                 type="text"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="상세 주소"
+                {...register('deliveryAddressDetail')}
               />
             </label>
+            <input type="submit" />
           </div>
         </OrderPageSection>
       </div>

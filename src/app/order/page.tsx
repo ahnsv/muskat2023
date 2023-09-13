@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 export default async function OrderPage() {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const { data: products } = await supabase.from("products").select();
+  const { data: products } = await supabase.from("products").select().order("id");
   // 심사를 위해 임시 제거
   // const {
   //   data: { session },
