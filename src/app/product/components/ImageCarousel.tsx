@@ -4,6 +4,7 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+import "./override.css";
 import product1 from "~/public/assets/product/product-1.jpeg";
 import product10 from "~/public/assets/product/product-10.jpeg";
 import product2 from "~/public/assets/product/product-2.jpeg";
@@ -23,7 +24,7 @@ const ImageCarousel: React.FC = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
-    adaptiveHeight: true,
+    // adaptiveHeight: true,
   };
   const products = [
     product1,
@@ -38,12 +39,12 @@ const ImageCarousel: React.FC = () => {
     product10,
   ];
   return (
-    <div className="w-full h-64 bg-gray-200 rounded-lg shadow-md">
-      <Slider {...settings}>
+    <div className="w-full h-full bg-gray-200 rounded-lg shadow-md">
+      <Slider {...settings} className="h-full">
         {products.map((product, idx) => (
           <div key={`product${idx + 1}`}>
             <div
-              className="slider-item w-full h-64 bg-cover bg-center rounded-lg"
+              className="slider-item w-full h-full bg-cover bg-center rounded-lg"
               style={{
                 backgroundImage: `url(${product.src})`,
               }}

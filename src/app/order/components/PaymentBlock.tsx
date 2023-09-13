@@ -63,6 +63,7 @@ export default function PaymentBlock() {
       <div id="payment-widget" style={{ width: "100%" }} />
       <div id="agreement" style={{ width: "100%" }} />
       <button
+        className="w-full bg-blue-400 py-2"
         onClick={async () => {
           const paymentWidget = paymentWidgetRef.current;
 

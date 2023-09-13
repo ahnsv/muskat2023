@@ -28,9 +28,7 @@ export default async function OrderPage() {
         주문하기
       </h1>
       <OrderForm products={products} />
-      <OrderPageSection title="결제">
-        <PaymentBlock />
-      </OrderPageSection>
+      <PaymentBlock />
     </div>
   );
 }
