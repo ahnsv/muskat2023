@@ -17,6 +17,7 @@ async function getData(searchParams) {
         Authorization: `Basic ${Buffer.from(
           `${process.env.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_SECRET}:`
         ).toString("base64")}`,
+        'Content-Type': "application/json"
       },
     }
   );
