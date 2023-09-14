@@ -22,9 +22,6 @@ async function getData(searchParams) {
     }
   );
 
-  const text = await response.text();
-  console.log({ text });
-
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
   if (!response.ok) {
