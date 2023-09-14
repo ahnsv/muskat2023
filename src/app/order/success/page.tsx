@@ -42,8 +42,10 @@ export default async function SuccessPage({ searchParams }) {
   return (
     <main
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      className="flex flex-col items-center h-full justify-center"
     >
-      <h1>결제 성공</h1>
+      <h1 className="text-4xl">결제 성공!</h1>
+      <h1 className="text-3xl">최대한 빠르게 배송해드릴게요!</h1>
       <p>주문: {payment.orderName}</p>
       <p>결제 수단: {payment.method}</p>
       <p>결제 금액: {payment.totalAmount.toLocaleString()}원</p>

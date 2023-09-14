@@ -58,23 +58,43 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
   } = useForm<OrderFormInput>();
   const supabase = createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
-        auth: {
-            persistSession: false
-        }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      auth: {
+        persistSession: false,
+      },
     }
   );
-  const insertNewOrder = async (amount: number) => {
-    return await supabase
+  const insertNewOrder = async (amount: number, prices: number[]) => {
+    const { data: orderData, error: orderError } = await supabase
       .from("orders")
       .insert({ user_id: 1, amount })
       .select();
+
+    for (const p in products) {
+      if (prices[p] >= 1) {
+        const { data: orderProductData, error: orderProductError } =
+          await supabase
+            .from("order_products")
+            .insert({
+              order_id: orderData?.[0].id,
+              product_id: products[p].id,
+              count: prices[p],
+            })
+            .select();
+        console.log({ orderProductData });
+        console.error({ orderProductError });
+      }
+    }
+
+    if (orderError) {
+      console.error({ orderError });
+    }
+    return orderData;
   };
   const onSubmit: SubmitHandler<OrderFormInput> = async (data) => {
-    const newOrder = await insertNewOrder(calculateTotalPrice());
-    console.log(newOrder.data);
-    console.error(newOrder.error);
-
+    const prices = [data.price1, data.price2, data.price3, data.price4];
+    const newOrder = await insertNewOrder(calculateTotalPrice(), prices);
     const paymentWidget = paymentWidgetRef.current;
 
     try {
@@ -92,6 +112,11 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
     } catch (error) {
       // 에러 처리하기
       console.error(error);
+      const {error: orderDeletionError} = await supabase.from("orders").delete().eq("id", newOrder?.[0]?.id)
+      const {error: orderProductDeletionError} = await supabase.from("order_products").delete().eq("order_id", newOrder?.[0]?.id)
+      if (orderDeletionError || orderProductDeletionError) {
+        throw new Error("삭제에 실패했습니다.")
+      }
     }
   };
   const watchValues = watch(["price1", "price2", "price3", "price4"]);
@@ -194,6 +219,9 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                         min="0"
                         id={`price${key + 1}`}
                         className="border rounded-md p-2 w-full"
+                        {...register(item.key, {
+                            valueAsNumber: true,
+                          })}
                       />
                     </>
                   )}
@@ -201,12 +229,14 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
               </div>
             ))}
           </div>
-          <div className="w-full text-right mt-4">
-            <p className="font-bold text-2xl">총합</p>
-            <p className="font-bold text-3xl">
-              {calculateTotalPrice()?.toLocaleString()}원
-            </p>
-          </div>
+          {calculateTotalPrice() !== 0 && (
+            <div className="w-full text-right mt-4">
+              <p className="font-bold text-2xl">총합</p>
+              <p className="font-bold text-3xl">
+                {calculateTotalPrice()?.toLocaleString()}원
+              </p>
+            </div>
+          )}
         </OrderPageSection>
         <OrderPageSection title="배송 정보">
           <div className="inputs space-y-4 py-4">
