@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Database } from "~/lib/database.types";

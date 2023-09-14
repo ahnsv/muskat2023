@@ -4,7 +4,6 @@ import { Database } from "~/lib/database.types";
 import { OrderForm } from "./components/OrderForm";
 import { redirect } from "next/navigation";
 
-type Product = Database["public"]["Tables"]["products"];
 
 export const dynamic = "force-dynamic";
 
