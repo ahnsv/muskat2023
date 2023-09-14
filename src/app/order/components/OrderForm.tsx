@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Database } from "~/lib/database.types";
@@ -68,7 +68,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
   };
   const onSubmit: SubmitHandler<OrderFormInput> = async (data) => {
     const newOrder = await insertNewOrder(calculateTotalPrice());
-    console.log({ newOrder });
+    console.log(newOrder.data);
+    console.error(newOrder.error);
 
     const paymentWidget = paymentWidgetRef.current;
 
@@ -94,11 +95,11 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
     ...product,
     key: `price${idx + 1}` as "price1" | "price2" | "price3" | "price4",
   }));
-  const calculateTotalPrice = () => {
+  const calculateTotalPrice = useCallback(() => {
     return watchValues.reduce((total, product, index) => {
       return total + product * products[index].price;
     }, 0);
-  };
+  }, [products, watchValues]);
 
   const [openPostCode, setOpenPostCode] = useState(false);
   const handle = {
@@ -121,7 +122,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
   const paymentMethodsWidgetRef = useRef<ReturnType<
     PaymentWidgetInstance["renderPaymentMethods"]
   > | null>(null);
-//   const [price, setPrice] = useState(50000);
+  //   const [price, setPrice] = useState(50000);
   useAsync(async () => {
     // ------  결제위젯 초기화 ------
     // 비회원 결제에는 customerKey 대신 ANONYMOUS를 사용하세요.
@@ -161,7 +162,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
       calculateTotalPrice(),
       paymentMethodsWidget.UPDATE_REASON.COUPON
     );
-  }, [calculateTotalPrice()]);
+  }, [calculateTotalPrice]);
   return (
     <form className="mt-12 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-2 bg-gray-100 lg:bg-white mb-8">
@@ -196,13 +197,13 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
               </div>
             ))}
           </div>
+          <div className="w-full text-right mt-4">
+            <p className="font-bold text-2xl">총합</p>
+            <p className="font-bold text-3xl">
+              {calculateTotalPrice()?.toLocaleString()}원
+            </p>
+          </div>
         </OrderPageSection>
-        <div className="w-full text-right mt-4">
-          <p className="font-bold text-2xl">총합</p>
-          <p className="font-bold text-3xl">
-            {calculateTotalPrice()?.toLocaleString()}
-          </p>
-        </div>
         <OrderPageSection title="배송 정보">
           <div className="inputs space-y-4 py-4">
             <label className="block">

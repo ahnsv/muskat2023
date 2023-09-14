@@ -33,13 +33,11 @@ async function getData(searchParams) {
     // throw new Error(`[statusCode: ${response.status}] Failed to fetch data`);
   }
 
-  return response.json();
+  return await response.json();
 }
 
 export default async function SuccessPage({ searchParams }) {
   const payment = await getData(searchParams);
-  console.log({searchParams});
-  
   if (!payment) {
     redirect('/order/fail')
   }
