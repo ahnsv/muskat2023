@@ -27,10 +27,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ options }) => {
         <div className="w-full h-full row-span-2">
           <ImageCarousel />
         </div>
-        <div className="px-4">
+        <div className="px-4 row-span-2 flex flex-col justify-center">
           <h1 className="text-2xl font-semibold mb-4">험프리네 샤인머스켓 </h1>
           <p className="text-gray-600 mb-4">
-            산 좋고 물 좋은 경북 김천에서 나고 자란 험프리가 추천하는...
+            <i>
+              “2023 추석 후회 없는 선택”<br></br>
+            </i>
+            경북 김천에서 나고 자란 험프리가 추천하는 험프리네 샤인머스캣🍇
           </p>
           <div className="flex items-center mb-4">
             <span className="text-xl font-bold text-gray-800 mr-2">
