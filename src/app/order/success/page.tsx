@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 async function getData(searchParams) {
@@ -17,7 +18,7 @@ async function getData(searchParams) {
         Authorization: `Basic ${Buffer.from(
           `${process.env.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_SECRET}:`
         ).toString("base64")}`,
-        'Content-Type': "application/json"
+        "Content-Type": "application/json",
       },
     }
   );
@@ -26,7 +27,7 @@ async function getData(searchParams) {
   // You can return Date, Map, Set, etc.
   if (!response.ok) {
     // This will activate the closest `error.js` Error Boundary
-    return null
+    return null;
     // throw new Error(`[statusCode: ${response.status}] Failed to fetch data`);
   }
 
@@ -36,7 +37,7 @@ async function getData(searchParams) {
 export default async function SuccessPage({ searchParams }) {
   const payment = await getData(searchParams);
   if (!payment) {
-    redirect('/order/fail')
+    redirect("/order/fail");
   }
 
   return (
@@ -55,6 +56,9 @@ export default async function SuccessPage({ searchParams }) {
       <p>
         <a href={payment.receipt.url}>영수증</a>
       </p>
+      <button className="bg-blue-400 rounded w-36 h-8">
+        <Link href={`/`}>홈으로 돌아가기</Link>
+      </button>
     </main>
   );
 }

@@ -96,7 +96,7 @@ const SoundButton: React.FC<SoundButtonProps> = ({ youtubeVideoID }) => {
                 d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"
               />
             </svg>
-            Pause
+            Stop
           </>
         ) : (
           <>
@@ -114,7 +114,7 @@ const SoundButton: React.FC<SoundButtonProps> = ({ youtubeVideoID }) => {
                 d="M9 5l7 7-7 7"
               />
             </svg>
-            Play
+            Start
           </>
         )}
       </button>
