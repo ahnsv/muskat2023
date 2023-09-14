@@ -109,18 +109,21 @@ export interface Database {
       }
       order_products: {
         Row: {
+          count: number | null
           created_at: string
           id: number
           order_id: number | null
           product_id: number | null
         }
         Insert: {
+          count?: number | null
           created_at?: string
           id?: number
           order_id?: number | null
           product_id?: number | null
         }
         Update: {
+          count?: number | null
           created_at?: string
           id?: number
           order_id?: number | null
@@ -146,18 +149,21 @@ export interface Database {
           amount: number | null
           created_at: string
           id: number
+          key: string | null
           user_id: number | null
         }
         Insert: {
           amount?: number | null
           created_at?: string
           id?: number
+          key?: string | null
           user_id?: number | null
         }
         Update: {
           amount?: number | null
           created_at?: string
           id?: number
+          key?: string | null
           user_id?: number | null
         }
         Relationships: [

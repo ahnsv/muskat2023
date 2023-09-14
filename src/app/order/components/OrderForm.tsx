@@ -65,10 +65,52 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
       },
     }
   );
-  const insertNewOrder = async (amount: number, prices: number[]) => {
+  const onSubmit: SubmitHandler<OrderFormInput> = async ({
+    name,
+    price1,
+    price2,
+    price3,
+    price4,
+    email,
+    phone,
+    deliveryAddress,
+    deliveryAddressDetail,
+  }) => {
+    const orderKey = makeid(14);
+    const prices = [price1, price2, price3, price4];
+    const { data: user, error: createUserError } = await supabase
+      .from("users")
+      .insert({
+        email,
+        phone,
+        name,
+      })
+      .select();
+    if (createUserError) {
+      throw new Error("유저를 생성하지 못했습니다.");
+    }
+
+    const { error: createAddress } = await supabase
+      .from("address")
+      .insert({
+        address1: deliveryAddress,
+        address2: "",
+        detail: deliveryAddressDetail,
+        user_id: user?.[0]?.id,
+        postal_code: 0o0000,
+      })
+      .select();
+    if (createAddress) {
+      throw new Error("주소를 저장하는 데 실패했습니다.");
+    }
+
     const { data: orderData, error: orderError } = await supabase
       .from("orders")
-      .insert({ user_id: 1, amount })
+      .insert({
+        user_id: user?.[0]?.id, // TODO: change user with auth
+        amount: calculateTotalPrice(),
+        key: orderKey,
+      })
       .select();
 
     for (const p in products) {
@@ -82,19 +124,13 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
               count: prices[p],
             })
             .select();
-        console.log({ orderProductData });
-        console.error({ orderProductError });
       }
     }
 
     if (orderError) {
       console.error({ orderError });
     }
-    return orderData;
-  };
-  const onSubmit: SubmitHandler<OrderFormInput> = async (data) => {
-    const prices = [data.price1, data.price2, data.price3, data.price4];
-    const newOrder = await insertNewOrder(calculateTotalPrice(), prices);
+
     const paymentWidget = paymentWidgetRef.current;
 
     try {
@@ -102,20 +138,33 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
       // 더 많은 결제 정보 파라미터는 결제위젯 SDK에서 확인하세요.
       // https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
       await paymentWidget?.requestPayment({
-        orderId: makeid(14),
+        orderId: orderKey,
         orderName: "샤인머스켓",
-        customerName: data.name,
-        customerEmail: data.email,
+        customerName: name,
+        customerEmail: email,
         successUrl: `${location.origin}/order/success`,
         failUrl: `${location.origin}/order/fail`,
       });
     } catch (error) {
       // 에러 처리하기
-      console.error(error);
-      const {error: orderDeletionError} = await supabase.from("orders").delete().eq("id", newOrder?.[0]?.id)
-      const {error: orderProductDeletionError} = await supabase.from("order_products").delete().eq("order_id", newOrder?.[0]?.id)
-      if (orderDeletionError || orderProductDeletionError) {
-        throw new Error("삭제에 실패했습니다.")
+      const { error: userDeleteError } = await supabase
+        .from("users")
+        .delete()
+        .eq("id", user?.[0]?.id);
+      const { error: addressDeleteError } = await supabase
+        .from("address")
+        .delete()
+        .eq("user_id", user?.[0]?.id);
+      const { error: orderDeletionError } = await supabase
+        .from("orders")
+        .delete()
+        .eq("id", orderData?.[0]?.id);
+      const { error: orderProductDeletionError } = await supabase
+        .from("order_products")
+        .delete()
+        .eq("order_id", orderData?.[0]?.id);
+      if (orderDeletionError || orderProductDeletionError || userDeleteError || addressDeleteError) {
+        throw new Error("삭제에 실패했습니다.");
       }
     }
   };
@@ -220,8 +269,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                         id={`price${key + 1}`}
                         className="border rounded-md p-2 w-full"
                         {...register(item.key, {
-                            valueAsNumber: true,
-                          })}
+                          valueAsNumber: true,
+                        })}
                       />
                     </>
                   )}
