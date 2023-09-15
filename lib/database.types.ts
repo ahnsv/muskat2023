@@ -12,29 +12,29 @@ export interface Database {
       address: {
         Row: {
           address1: string
-          address2: string
+          address2: string | null
           created_at: string
           detail: string | null
           id: number
-          postal_code: number | null
+          postal_code: string | null
           user_id: number | null
         }
         Insert: {
           address1: string
-          address2: string
+          address2?: string | null
           created_at?: string
           detail?: string | null
           id?: number
-          postal_code?: number | null
+          postal_code?: string | null
           user_id?: number | null
         }
         Update: {
           address1?: string
-          address2?: string
+          address2?: string | null
           created_at?: string
           detail?: string | null
           id?: number
-          postal_code?: number | null
+          postal_code?: string | null
           user_id?: number | null
         }
         Relationships: [

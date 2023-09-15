@@ -13,6 +13,7 @@ import {
 } from "@tosspayments/payment-widget-sdk";
 import { useAsync } from "react-use";
 import { createClient } from "@supabase/supabase-js";
+import Portal from "./Portal";
 
 const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY;
 
@@ -33,6 +34,7 @@ type OrderFormInput = {
   phone: string;
   deliveryAddress: string;
   deliveryAddressDetail: string;
+  postalCode: string;
 };
 
 function makeid(length: number): string {
@@ -55,6 +57,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
     handleSubmit,
     watch,
     formState: { errors },
+    setValue,
   } = useForm<OrderFormInput>();
   const supabase = createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -75,6 +78,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
     phone,
     deliveryAddress,
     deliveryAddressDetail,
+    postalCode
   }) => {
     const orderKey = makeid(14);
     const prices = [price1, price2, price3, price4];
@@ -97,7 +101,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
         address2: "",
         detail: deliveryAddressDetail,
         user_id: user?.[0]?.id,
-        postal_code: 0o0000,
+        postal_code: postalCode,
       })
       .select();
     if (createAddress) {
@@ -163,7 +167,12 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
         .from("order_products")
         .delete()
         .eq("order_id", orderData?.[0]?.id);
-      if (orderDeletionError || orderProductDeletionError || userDeleteError || addressDeleteError) {
+      if (
+        orderDeletionError ||
+        orderProductDeletionError ||
+        userDeleteError ||
+        addressDeleteError
+      ) {
         throw new Error("삭제에 실패했습니다.");
       }
     }
@@ -192,6 +201,9 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                 주소: ${data.address},
                 우편번호: ${data.zonecode}
             `);
+      setValue("deliveryAddress", data.address);
+      // setValue("deliveryAddress")
+      setValue("postalCode", data.zonecode);
       setOpenPostCode(false);
     },
   };
@@ -310,21 +322,25 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
             <label className="block">
               <span className="text-gray-700">핸드폰</span>
               <input
-                type="phone"
+                type="tel"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="010-0000-0000"
                 {...register("phone")}
               />
             </label>
-            <label className="block" onClick={handle.clickButton}>
+            <label className="block">
               {openPostCode && (
-                <DaumPostCode
-                  onComplete={handle.selectAddress} // 값을 선택할 경우 실행되는 이벤트
-                  autoClose={true} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
-                />
+                <Portal selector={`#portal`}>
+                  <DaumPostCode
+                    onComplete={handle.selectAddress} // 값을 선택할 경우 실행되는 이벤트
+                    autoClose={false} // 값을 선택할 경우 사용되는 DOM을 제거하여 자동 닫힘 설정
+                    className="h-full fixed top-0"
+                  />
+                </Portal>
               )}
               <span className="text-gray-700">주소</span>
               <input
+                onClick={handle.clickButton}
                 type="text"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="주소"
@@ -336,16 +352,21 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                 placeholder="상세 주소"
                 {...register("deliveryAddressDetail")}
               />
+              <input
+                type="text"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                placeholder="우편 번호"
+                {...register("postalCode")}
+              />
             </label>
-            {/* <input type="submit" /> */}
           </div>
         </OrderPageSection>
         <div id="payment-widget" style={{ width: "100%" }} />
         <div id="agreement" style={{ width: "100%" }} />
         <input
           type="submit"
-          className="w-full bg-blue-400 py-2 h-12 rounded"
-          title="결제하기"
+          className="w-full bg-blue-400 py-2 h-12 rounded cursor-pointer hover:bg-blue-500 text-white transition"
+          value="결제하기"
         />
       </div>
     </form>

@@ -28,6 +28,7 @@ export default async function RootLayout({
       <Script src="https://www.youtube.com/iframe_api" async />
       <body>
         <AuthProvider accessToken={accessToken}>{children}</AuthProvider>
+        <div id="portal"/>
       </body>
     </html>
   );
