@@ -1,3 +1,4 @@
 .slick-current .slider-item {
-    height: 492px
+    height: 45vh;
+    max-height: 50vh;
 }
