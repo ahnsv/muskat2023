@@ -28,7 +28,7 @@ export default async function RootLayout({
     <html lang="en">
       <meta property="og:title" content="험프리의 샤인 머스켓 | Shine Muskat 2023"></meta>
       <meta property="og:description" content="2023 후회없는 선택 - 험프리의 샤인 머스켓" />
-      <meta property="og:url" content="/"></meta>
+      <meta property="og:url" content="https://muskat2023.humphreyahn.dev"></meta>
       <meta property="og:image" content={bg.src}></meta>
       <meta
         property="description"
