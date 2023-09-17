@@ -44,15 +44,20 @@ export default async function SuccessPage({ searchParams }) {
       <Confetti />
       <h1 className="text-4xl">결제 성공!</h1>
       <h1 className="text-3xl">최대한 빠르게 배송해드릴게요!</h1>
-      <p>주문: {payment.orderName}</p>
-      <p>결제 수단: {payment.method}</p>
-      <p>결제 금액: {payment.totalAmount.toLocaleString()}원</p>
-      <p>
-        결제 일시: {format(new Date(payment.approvedAt), "yyyy/MM/dd HH:mm:ss")}
-      </p>
-      <p>
-        <a href={payment.receipt.url}>영수증</a>
-      </p>
+      {payment && (
+        <>
+          <p>주문: {payment.orderName}</p>
+          <p>결제 수단: {payment.method}</p>
+          <p>결제 금액: {payment.totalAmount.toLocaleString()}원</p>
+          <p>
+            결제 일시:{" "}
+            {format(new Date(payment.approvedAt), "yyyy/MM/dd HH:mm:ss")}
+          </p>
+          <p>
+            <a href={payment.receipt.url}>영수증</a>
+          </p>
+        </>
+      )}
       <button className="bg-blue-400 rounded w-36 h-8">
         <Link href={`/`}>홈으로 돌아가기</Link>
       </button>
