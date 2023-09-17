@@ -287,26 +287,29 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
           <div className="options space-y-4 py-4">
             {productsWithKey?.map((item, key: 0 | 1 | 2 | 3) => (
               <div
-                className="product-item grid grid-cols-4 items-center"
+                className="product-item grid grid-rows-2 lg:grid-cols-4 items-center auto-rows-min"
                 key={key}
               >
-                <div className="product-name">{item.name}</div>
+                <div className="product-name font-bold text-lg">
+                  {item.name}
+                </div>
                 <div className="product-description">{item.description}</div>
                 <div className="product-price">
-                  {item.price.toLocaleString()}
+                  가격: {item.price.toLocaleString()}
                 </div>
                 <Controller
                   name={item.key}
                   control={control}
                   defaultValue={0}
                   render={({ field }) => (
-                    <>
+                    <div className="flex items-center">
+                      <span className="flex-initial">수량:</span>
                       <input
                         {...field}
                         type="number"
                         min="0"
                         id={`price${key + 1}`}
-                        className="border rounded-md p-2 w-full"
+                        className="border rounded-md p-2 w-full flex-1 mx-2"
                         {...register(item.key, {
                           valueAsNumber: true,
                           max: 5,
@@ -315,7 +318,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                         max={5}
                         aria-invalid={errors?.[item.key] ? true : false}
                       />
-                    </>
+                    </div>
                   )}
                 />
                 {errors?.[item.key]?.message && (
@@ -375,7 +378,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                 placeholder="010-0000-0000"
                 {...register("phone", {
                   required: "반드시 작성해주셔야 합니다.",
-                  pattern: /^(0\d{1,2}-\d{3,4}-\d{4}|01[0-9]-\d{3,4}-\d{4}|01[0-9]\d{7,8})$/
+                  pattern:
+                    /^(0\d{1,2}-\d{3,4}-\d{4}|01[0-9]-\d{3,4}-\d{4}|01[0-9]\d{7,8})$/,
                 })}
               />
               {errors.phone && (
