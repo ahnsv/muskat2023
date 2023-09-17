@@ -53,6 +53,7 @@ export interface Database {
           id: number
           key: string
           name: string | null
+          stock: number
           type: string | null
           value: number | null
         }
@@ -62,6 +63,7 @@ export interface Database {
           id?: number
           key: string
           name?: string | null
+          stock?: number
           type?: string | null
           value?: number | null
         }
@@ -71,6 +73,7 @@ export interface Database {
           id?: number
           key?: string
           name?: string | null
+          stock?: number
           type?: string | null
           value?: number | null
         }
@@ -243,6 +246,12 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      decrement_stock: {
+        Args: {
+          key_param: string
+        }
+        Returns: undefined
+      }
       get_transactions: {
         Args: Record<PropertyKey, never>
         Returns: {

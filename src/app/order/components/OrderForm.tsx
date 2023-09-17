@@ -399,6 +399,11 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
               id="coupon"
               onKeyUpCapture={handleCouponInputChange} // TODO: add debounce
             />
+            {couponStatus && (
+              <p className="bg-green-400 rounded px-4 my-4 py-2 font-bold">
+                ✅ 쿠폰이 적용되었습니다.
+              </p>
+            )}
           </label>
         </OrderPageSection>
         <OrderPageSection title="결제">
@@ -411,13 +416,15 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
               </span>
             </div>
             {couponStatus && (
-              <div className="price-item grid grid-cols-2 text-sm my-2">
+              <div className="price-item grid grid-cols-3 text-sm my-2">
                 <span>쿠폰 할인</span>
+                <span>{couponStatus.name}</span>
                 <span className="justify-self-end">
                   {couponStatus.value.toLocaleString()}
                 </span>
               </div>
             )}
+            <hr className="mt-8"></hr>
             {calculateTotalPrice() != 0 && (
               <div className="price-item grid grid-cols-2 text-sm my-2">
                 <span>결제할 금액</span>
