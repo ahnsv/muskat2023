@@ -2,9 +2,6 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database } from "~/lib/database.types";
 import { OrderForm } from "./components/OrderForm";
-import { redirect, usePathname } from "next/navigation";
-import { OrderPageSection } from "./components/OrderPageSelection";
-import PaymentBlock from "./components/PaymentBlock";
 
 type Product = Database["public"]["Tables"]["products"];
 
@@ -27,6 +24,9 @@ export default async function OrderPage() {
       <h1 className="lg:ml-2 font-bold leading-7 text-gray-900 text-4xl pl-4 lg:pl-0">
         주문하기
       </h1>
+      <span className="block px-4 lg:px-2 mt-8">
+        상품 갯수를 입력 후, 배송지와 쿠폰 그리고 결제 방법을 입력해주세요.
+      </span>
       <OrderForm products={products} />
       {/* <PaymentBlock /> */}
     </div>

@@ -1,8 +1,5 @@
 import { format } from "date-fns";
-import JSConfetti from "js-confetti";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { useEffect } from "react";
 import Confetti from "./components/confetti";
 
 async function getData(searchParams) {

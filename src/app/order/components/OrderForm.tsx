@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import DaumPostCode from "react-daum-postcode";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Database } from "~/lib/database.types";
@@ -18,6 +18,7 @@ import Portal from "./Portal";
 const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY;
 
 type Product = Database["public"]["Tables"]["products"];
+type Coupon = Database["public"]["Tables"]["coupons"]["Row"];
 type ProductRow = Product["Row"];
 
 type OrderFormProps = {
@@ -78,7 +79,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
     phone,
     deliveryAddress,
     deliveryAddressDetail,
-    postalCode
+    postalCode,
   }) => {
     const orderKey = makeid(14);
     const prices = [price1, price2, price3, price4];
@@ -112,7 +113,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
       .from("orders")
       .insert({
         user_id: user?.[0]?.id, // TODO: change user with auth
-        amount: calculateTotalPrice(),
+        amount: calculateTotalPrice() - (couponStatus?.value ?? 0),
         key: orderKey,
       })
       .select();
@@ -249,13 +250,39 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
     // 새로운 결제 금액을 넣어주세요.
     // https://docs.tosspayments.com/reference/widget-sdk#updateamount결제-금액
     paymentMethodsWidget.updateAmount(
-      calculateTotalPrice(),
+      calculateTotalPrice() - (couponStatus?.value ?? 0),
       paymentMethodsWidget.UPDATE_REASON.COUPON
     );
   }, [calculateTotalPrice]);
+
+  const [couponName, setCouponName] = useState("");
+  const [couponStatus, setCouponStatus] = useState<Coupon>(null);
+  const handleCouponInputChange = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    setCouponName(e.currentTarget.value);
+  };
+  useEffect(() => {
+    const updateCouponStatus = async () => {
+      if (!couponName) {
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("coupons")
+        .select("*")
+        .eq("key", couponName);
+      if (error) {
+        throw error;
+      }
+      setCouponStatus(data?.[0]);
+    };
+    updateCouponStatus();
+  }, [couponName]);
+
   return (
-    <form className="mt-12 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-      <div className="space-y-2 bg-gray-100 lg:bg-white mb-8">
+    <form className="mt-4 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+      <div className="space-y-2 bg-gray-100 lg:bg-white my-8">
         <OrderPageSection title="상품 선택">
           <div className="options space-y-4 py-4">
             {productsWithKey?.map((item, key: 0 | 1 | 2 | 3) => (
@@ -361,13 +388,62 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
             </label>
           </div>
         </OrderPageSection>
-        <div id="payment-widget" style={{ width: "100%" }} />
-        <div id="agreement" style={{ width: "100%" }} />
-        <input
-          type="submit"
-          className="w-full bg-blue-400 py-2 h-12 rounded cursor-pointer hover:bg-blue-500 text-white transition"
-          value="결제하기"
-        />
+        <OrderPageSection title="쿠폰 적용">
+          <label className="block my-4">
+            <span className="text-gray-700">
+              쿠폰을 입력해주세요 (optional)
+            </span>
+            <input
+              type="text"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              id="coupon"
+              onKeyUpCapture={handleCouponInputChange} // TODO: add debounce
+            />
+            {couponStatus && (
+              <p className="bg-green-400 rounded px-4 my-4 py-2 font-bold">
+                ✅ 쿠폰이 적용되었습니다.
+              </p>
+            )}
+          </label>
+        </OrderPageSection>
+        <OrderPageSection title="결제">
+          <div className="final-price my-4 px-8">
+            <h3 className="text-xl font-medium">결제 금액</h3>
+            <div className="price-item grid grid-cols-2 text-sm my-2">
+              <span>주문 금액</span>
+              <span className="justify-self-end">
+                {calculateTotalPrice().toLocaleString()}
+              </span>
+            </div>
+            {couponStatus && (
+              <div className="price-item grid grid-cols-3 text-sm my-2">
+                <span>쿠폰 할인</span>
+                <span>{couponStatus.name}</span>
+                <span className="justify-self-end">
+                  {couponStatus.value.toLocaleString()}
+                </span>
+              </div>
+            )}
+            <hr className="mt-8"></hr>
+            {calculateTotalPrice() != 0 && (
+              <div className="price-item grid grid-cols-2 text-sm my-2">
+                <span>결제할 금액</span>
+                <span className="justify-self-end font-bold text-red-600">
+                  {(
+                    calculateTotalPrice() - (couponStatus?.value ?? 0)
+                  )?.toLocaleString()}
+                </span>
+              </div>
+            )}
+          </div>
+          <div id="payment-widget" style={{ width: "100%" }} />
+          <div id="agreement" style={{ width: "100%" }} />
+          <input
+            type="submit"
+            className="w-full bg-blue-400 py-2 h-12 rounded cursor-pointer hover:bg-blue-500 text-white transition"
+            value="결제하기"
+          />
+        </OrderPageSection>
       </div>
     </form>
   );
