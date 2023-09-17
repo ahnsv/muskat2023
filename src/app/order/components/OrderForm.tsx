@@ -309,11 +309,18 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                         className="border rounded-md p-2 w-full"
                         {...register(item.key, {
                           valueAsNumber: true,
+                          max: 5,
+                          min: 0,
                         })}
+                        max={5}
+                        aria-invalid={errors?.[item.key] ? true : false}
                       />
                     </>
                   )}
                 />
+                {errors?.[item.key]?.message && (
+                  <p>{errors?.[item.key].message}</p>
+                )}
               </div>
             ))}
           </div>
@@ -334,8 +341,15 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                 type="text"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder=""
-                {...register("name")}
+                {...register("name", {
+                  required: "반드시 작성해주셔야 합니다.",
+                })}
               />
+              {errors.name && (
+                <p className="bg-red-300 rounded px-4 py-2 my-2 font-bold">
+                  🚨 {errors.name.message}
+                </p>
+              )}
             </label>
             <label className="block">
               <span className="text-gray-700">이메일</span>
@@ -343,8 +357,15 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                 type="email"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="john@example.com"
-                {...register("email")}
+                {...register("email", {
+                  required: "반드시 작성해주셔야 합니다.",
+                })}
               />
+              {errors.email && (
+                <p className="bg-red-300 rounded px-4 py-2 my-2 font-bold">
+                  🚨 {errors.email.message}
+                </p>
+              )}
             </label>
             <label className="block">
               <span className="text-gray-700">핸드폰</span>
@@ -352,8 +373,16 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                 type="tel"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="010-0000-0000"
-                {...register("phone")}
+                {...register("phone", {
+                  required: "반드시 작성해주셔야 합니다.",
+                  pattern: /^(0\d{1,2}-\d{3,4}-\d{4}|01[0-9]-\d{3,4}-\d{4}|01[0-9]\d{7,8})$/
+                })}
               />
+              {errors.phone && (
+                <p className="bg-red-300 rounded px-4 py-2 my-2 font-bold">
+                  🚨 {errors.phone.message}
+                </p>
+              )}
             </label>
             <label className="block">
               {openPostCode && (
@@ -371,20 +400,43 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
                 type="text"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="주소"
-                {...register("deliveryAddress")}
+                {...register("deliveryAddress", {
+                  required: "반드시 작성해주셔야 합니다.",
+                })}
               />
+              {errors.deliveryAddress && (
+                <p className="bg-red-300 rounded px-4 py-2 my-2 font-bold">
+                  🚨 {errors.deliveryAddress.message}
+                </p>
+              )}
+
               <input
                 type="text"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="상세 주소"
-                {...register("deliveryAddressDetail")}
+                {...register("deliveryAddressDetail", {
+                  required: "반드시 작성해주셔야 합니다.",
+                })}
               />
+              {errors.deliveryAddressDetail && (
+                <p className="bg-red-300 rounded px-4 py-2 my-2 font-bold">
+                  🚨 {errors.deliveryAddressDetail.message}
+                </p>
+              )}
+
               <input
                 type="text"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="우편 번호"
-                {...register("postalCode")}
+                {...register("postalCode", {
+                  required: "반드시 작성해주셔야 합니다.",
+                })}
               />
+              {errors.postalCode && (
+                <p className="bg-red-300 rounded px-4 py-2 my-2 font-bold">
+                  🚨 {errors.postalCode.message}
+                </p>
+              )}
             </label>
           </div>
         </OrderPageSection>
