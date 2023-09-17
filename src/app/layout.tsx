@@ -23,13 +23,15 @@ export default async function RootLayout({
     data: { session },
   } = await supabase.auth.getSession();
 
+  const homeURL = "https://muskat2023.humphreyahn.dev"
+
   const accessToken = session?.access_token || null;
   return (
     <html lang="en">
       <meta property="og:title" content="험프리의 샤인 머스켓 | Shine Muskat 2023"></meta>
       <meta property="og:description" content="2023 후회없는 선택 - 험프리의 샤인 머스켓" />
-      <meta property="og:url" content="https://muskat2023.humphreyahn.dev"></meta>
-      <meta property="og:image" content={bg.src}></meta>
+      <meta property="og:url" content={homeURL}></meta>
+      <meta property="og:image" content={`${homeURL}/${bg.src}`}></meta>
       <meta
         property="description"
         content="2023 후회없는 선택 - 험프리의 샤인 머스켓"
