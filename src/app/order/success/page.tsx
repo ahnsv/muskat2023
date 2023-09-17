@@ -1,6 +1,9 @@
 import { format } from "date-fns";
+import JSConfetti from "js-confetti";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { useEffect } from "react";
+import Confetti from "./components/confetti";
 
 async function getData(searchParams) {
   const { paymentKey, orderId, amount } = searchParams;
@@ -36,15 +39,12 @@ async function getData(searchParams) {
 
 export default async function SuccessPage({ searchParams }) {
   const payment = await getData(searchParams);
-  if (!payment) {
-    redirect("/order/fail");
-  }
-
   return (
     <main
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       className="flex flex-col items-center h-full justify-center"
     >
+      <Confetti />
       <h1 className="text-4xl">결제 성공!</h1>
       <h1 className="text-3xl">최대한 빠르게 배송해드릴게요!</h1>
       <p>주문: {payment.orderName}</p>
