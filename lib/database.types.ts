@@ -51,6 +51,7 @@ export interface Database {
           created_at: string
           exclusive: boolean | null
           id: number
+          key: string
           name: string | null
           type: string | null
           value: number | null
@@ -59,6 +60,7 @@ export interface Database {
           created_at?: string
           exclusive?: boolean | null
           id?: number
+          key: string
           name?: string | null
           type?: string | null
           value?: number | null
@@ -67,6 +69,7 @@ export interface Database {
           created_at?: string
           exclusive?: boolean | null
           id?: number
+          key?: string
           name?: string | null
           type?: string | null
           value?: number | null
@@ -75,6 +78,7 @@ export interface Database {
       }
       delivery: {
         Row: {
+          address_id: number | null
           created_at: string
           id: number
           order_id: number | null
@@ -83,6 +87,7 @@ export interface Database {
           status: string | null
         }
         Insert: {
+          address_id?: number | null
           created_at?: string
           id?: number
           order_id?: number | null
@@ -91,6 +96,7 @@ export interface Database {
           status?: string | null
         }
         Update: {
+          address_id?: number | null
           created_at?: string
           id?: number
           order_id?: number | null
@@ -99,6 +105,12 @@ export interface Database {
           status?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "delivery_address_id_fkey"
+            columns: ["address_id"]
+            referencedRelation: "address"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "delivery_order_id_fkey"
             columns: ["order_id"]
@@ -231,7 +243,17 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_transactions: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          order_id: number
+          order_date: string
+          order_key: string
+          user_id: number
+          user_name: string
+          address_id: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
