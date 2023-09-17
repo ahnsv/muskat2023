@@ -15,7 +15,7 @@ export const HeroSection: FC = () => {
   const containerRef = useRef<HTMLDivElement>();
   return (
     <div
-      className={`hero h-full flex flex-col align-center justify-center`}
+      className={`hero h-full flex flex-col items-center justify-center`}
       ref={containerRef}
     >
       <SoundButton youtubeVideoID={`M0U9iaH19wo`} />
@@ -27,7 +27,7 @@ export const HeroSection: FC = () => {
       </div>
       <div className="hero-menus flex items-center justify-center">
         <div className="hero-menu flex-1 mt-16">
-          <Link href={`/product`} className="flex flex-col align-center">
+          <Link href={`/product`} className="flex flex-col items-center">
             <Image
               src={shipping.src}
               alt="shipping"
@@ -36,14 +36,14 @@ export const HeroSection: FC = () => {
               className="cursor-pointer"
             />
             <div className="menu-title text-2xl font-bold text-center">
-              패키지
+              {/* 패키지 */}
             </div>
           </Link>
         </div>
         <div className="hero-menu flex-1 text-center">
           <Link
             href={`https://www.humphreyahn.dev/muskat2023`}
-            className="flex flex-col align-center"
+            className="flex flex-col items-center"
           >
             <Image
               src={order.src} // TODO: replace with product detail icon
@@ -53,7 +53,7 @@ export const HeroSection: FC = () => {
               className="cursor-poi지ter"
             />
             <div className="menu-title text-2xl font-bold text-center">
-              상품 상세
+              {/* 상품 상세 */}
             </div>
           </Link>
         </div>
@@ -67,7 +67,7 @@ export const HeroSection: FC = () => {
             onClick={() => alert('준비중인 기능입니다.')}
           />
           <div className="menu-title text-2xl font-bold text-center">
-            이미지
+            {/* 이미지 */}
           </div>
         </div>
       </div>
