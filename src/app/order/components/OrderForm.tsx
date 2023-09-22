@@ -28,8 +28,8 @@ type OrderFormProps = {
 type OrderFormInput = {
   price1: number;
   price2: number;
-  price3: number;
-  price4: number;
+  // price3: number;
+  // price4: number;
   name: string;
   email: string;
   phone: string;
@@ -73,8 +73,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
     name,
     price1,
     price2,
-    price3,
-    price4,
+    // price3,
+    // price4,
     email,
     phone,
     deliveryAddress,
@@ -82,7 +82,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
     postalCode,
   }) => {
     const orderKey = makeid(14);
-    const prices = [price1, price2, price3, price4];
+    const prices = [price1, price2];
     const { data: user, error: createUserError } = await supabase
       .from("users")
       .insert({
@@ -178,14 +178,14 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
       }
     }
   };
-  const watchValues = watch(["price1", "price2", "price3", "price4"]);
+  const watchValues = watch(["price1", "price2", ]);
   const productsWithKey = products.map((product, idx) => ({
     ...product,
-    key: `price${idx + 1}` as "price1" | "price2" | "price3" | "price4",
+    key: `price${idx + 1}` as "price1" | "price2",
   }));
   const calculateTotalPrice = useCallback(() => {
     return watchValues.reduce((total, product, index) => {
-      return total + product * products[index]?.price || 0;
+      return total + (product * (products[index]?.price || 0));
     }, 0);
   }, [products, watchValues]);
 
@@ -285,7 +285,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
       <div className="space-y-2 bg-gray-100 lg:bg-white lg:my-8">
         <OrderPageSection title="상품 선택">
           <div className="options space-y-4 py-4">
-            {productsWithKey?.map((item, key: 0 | 1 | 2 | 3) => (
+            {productsWithKey?.map((item, key: 0 | 1) => (
               <div
                 className="product-item grid grid-rows-2 lg:grid-cols-4 items-center auto-rows-min"
                 key={key}
