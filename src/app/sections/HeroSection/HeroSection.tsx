@@ -32,6 +32,10 @@ export const HeroSection: FC = () => {
       </div>
       <div className="hero-menus flex items-center justify-center">
         <div className="hero-menu flex-1 mt-16">
+          <div className="floating-arrow animate-bounce">
+            <span className="text-9xl">👇</span>
+            <span className="text-2xl font-bold">주문하기</span>
+          </div>
           <Link
             href={`/order`}
             className="flex flex-col items-center"
