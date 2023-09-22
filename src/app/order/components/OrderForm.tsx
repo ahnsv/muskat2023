@@ -185,7 +185,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
   }));
   const calculateTotalPrice = useCallback(() => {
     return watchValues.reduce((total, product, index) => {
-      return total + product * products[index].price;
+      return total + product * products[index]?.price || 0;
     }, 0);
   }, [products, watchValues]);
 
@@ -281,8 +281,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ products }) => {
   }, [couponName]);
 
   return (
-    <form className="mt-4 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-      <div className="space-y-2 bg-gray-100 lg:bg-white my-8">
+    <form className="lg:mt-4 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+      <div className="space-y-2 bg-gray-100 lg:bg-white lg:my-8">
         <OrderPageSection title="상품 선택">
           <div className="options space-y-4 py-4">
             {productsWithKey?.map((item, key: 0 | 1 | 2 | 3) => (

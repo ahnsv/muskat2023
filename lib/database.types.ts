@@ -197,6 +197,7 @@ export interface Database {
           id: number
           name: string | null
           price: number | null
+          show: boolean
           stock: number | null
         }
         Insert: {
@@ -205,6 +206,7 @@ export interface Database {
           id?: number
           name?: string | null
           price?: number | null
+          show?: boolean
           stock?: number | null
         }
         Update: {
@@ -213,6 +215,7 @@ export interface Database {
           id?: number
           name?: string | null
           price?: number | null
+          show?: boolean
           stock?: number | null
         }
         Relationships: []

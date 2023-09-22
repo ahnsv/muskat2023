@@ -9,15 +9,15 @@ export const dynamic = "force-dynamic";
 
 export default async function OrderPage() {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const { data: products } = await supabase.from("products").select().order("id");
+  const { data: products } = await supabase.from("products").select("*").eq("show", true).order("id");
   // 심사를 위해 임시 제거
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  // const {
+  //   data: { session },
+  // } = await supabase.auth.getSession();
 
-  if (!session) {
-    redirect("/");
-  }
+  // if (!session) {
+  //   redirect("/");
+  // }
 
   return (
     <div className="order-page lg:container lg:mx-auto py-12 lg:px-24">
