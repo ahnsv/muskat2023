@@ -102,19 +102,14 @@ const SoundButton: React.FC<SoundButtonProps> = ({ youtubeVideoID }) => {
           <>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 mr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+              viewBox="0 0 100 100"
+              width="25"
+              height="25"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 5l7 7-7 7"
-              />
+              <circle cx="50" cy="50" r="45" fill="#ffffff" />
+              <polygon points="35,25 75,50 35,75" fill="#000000" />
             </svg>
-            Start
+            <span className="ml-2">Play Music</span>
           </>
         )}
       </button>

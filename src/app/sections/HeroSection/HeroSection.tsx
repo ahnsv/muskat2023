@@ -33,17 +33,13 @@ export const HeroSection: FC = () => {
       <div className="hero-menus flex items-center justify-center">
         <div className="hero-menu flex-1 mt-16">
           <div className="floating-arrow animate-bounce">
-            <span className="text-9xl">👇</span>
-            <span className="text-2xl font-bold">주문하기</span>
+            <span className="text-5xl lg:text-9xl">👇</span>
+            <span className="text-md lg:text-2xl font-bold">주문하기</span>
           </div>
+          <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
           <Link
             href={`/order`}
             className="flex flex-col items-center"
-            // onClick={() =>
-            //   alert(
-            //     "수량 부족으로 인해 완판되었습니다. 빠른 시일 내에 다시 찾아뵙겠습니다."
-            //   )
-            // }
           >
             <Image
               src={shipping.src}
