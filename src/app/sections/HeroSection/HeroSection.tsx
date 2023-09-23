@@ -18,11 +18,11 @@ export const HeroSection: FC = () => {
       className={`hero h-full flex flex-col items-center justify-center`}
       ref={containerRef}
     >
-      {/* <div className="banner bg-red-400 rounded absolute top-0 px-4 py-2 text-white font-black my-4 mx-4 transition relative animate-bounce">
+      <div className="banner bg-red-400 rounded absolute top-0 px-4 py-2 text-white font-black my-4 mx-4 transition relative animate-bounce">
         <span>
-          ℹ️ 수량 부족으로 인해 완판되었습니다. 빠른 시일 내에 다시 찾아뵙겠습니다. (2023-09-19)
+          ℹ️ 카드사 심사 관계로 현재 계좌로 결제만 가능합니다. 토스 선택 시에도 카드가 아닌 계좌를 선택해주세요!!
         </span>
-      </div> */}
+      </div>
       <SoundButton youtubeVideoID={`M0U9iaH19wo`} />
       <div
         className={`hero-title text-5xl lg:text-7xl text-gray-700 ${BlackHanSans.className} text-center italic my-8`}
